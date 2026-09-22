@@ -87,3 +87,15 @@ class OrderProcessingService:
 
         self.conn.commit()
         return order_record
+
+    def calculate_estimated_tax(self, subtotal: float, state_code: str) -> float:
+        """Estimate sales tax based on two-letter state code."""
+        tax_rates = {
+            "CA": 0.0725,
+            "NY": 0.04,
+            "TX": 0.0625,
+            "WA": 0.065,
+        }
+        rate = tax_rates.get(state_code.upper(), 0.0)
+        return round(subtotal * rate, 2)
+
